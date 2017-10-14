@@ -1,5 +1,14 @@
-#app {
+body {
   text-align: center;
+  background-color: black;
   font-family: sans-serif;
-  color: blue;
+  color: gray;
+  overflow: hidden;
+}
+
+#scrollbox {
+  background-color: #3a3d42;
+  height: 90vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
