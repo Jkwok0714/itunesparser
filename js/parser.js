@@ -1,17 +1,22 @@
 let fs = require('fs'),
     xml2js = require('xml2js');
 
-let parser = new xml2js.Parser();
-fs.readFile(__dirname + '/sample.xml', function(err, data) {
-    parser.parseString(data, function (err, result) {
+let readXML = function() {
+  return new Promise((resolve, reject) => {
+    let parser = new xml2js.Parser();
+    fs.readFile(__dirname + '/../sample.xml', function(err, data) {
+      parser.parseString(data, function (err, result) {
         let isolatedResults = result.plist.dict[0].dict[0].dict;
         // console.dir(isolatedResults);
-        console.log('Done. Extracted', isolatedResults.length, 'items');
+        // console.log('Done. Extracted', isolatedResults.length, 'items');
         // processResults(isolatedResults);
         let parsed = rawResultsToObjects(isolatedResults);
-        console.dir(parsed);
+        // console.dir(parsed);
+        resolve(parsed);
+      });
     });
-});
+  });
+}
 
 let rawResultsToObjects = (rawResult) => {
   let resultArray = [];
@@ -86,6 +91,9 @@ const KEY_TYPE = {
   'Rating': 'integer'
 };
 
+module.exports = {
+  readXML
+};
 /*
 
 Sample data
