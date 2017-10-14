@@ -5,15 +5,21 @@ let parser = new xml2js.Parser();
 fs.readFile(__dirname + '/sample.xml', function(err, data) {
     parser.parseString(data, function (err, result) {
         let isolatedResults = result.plist.dict[0].dict[0].dict;
-        console.dir(isolatedResults);
+        // console.dir(isolatedResults);
         console.log('Done. Extracted', isolatedResults.length, 'items');
+        // processResults(isolatedResults);
+        rawResultsToObjects(isolatedResults);
     });
 });
 
-let rawResultsToObjects = (rawResult) => {
-  let resultArray = [];
 
-  return resultArray;
+let rawResultsToObjects = (rawResult) => {
+  // let resultArray = [];
+  //
+  // return resultArray;
+  console.log('Expecting to parse', rawResult[0]);
+  let obj1 = processObject(rawResult[0]);
+  console.dir(obj1);
 };
 
 let videoToObject = (obj) => {
@@ -24,9 +30,32 @@ let audioToObject = (obj) => {
 
 };
 
+let processObject = (obj) => {
+  let result = {};
+  let currIndex = {
+    integer: 0,
+    date: 0,
+    string: 0,
+    boolean: 0
+  };
+
+  let typeOfKey;
+  for (var key of obj.key) {
+    typeOfKey = keyType[key];
+    console.log('Processing key', key, 'of type', typeOfKey);
+    if (typeOfKey === 'boolean') {
+      result[key] = 'boolean who cares';
+    } else {
+      result[key] = obj[typeOfKey][currIndex[typeOfKey]];
+    }
+    currIndex[typeOfKey]++;
+  }
+  return result;
+}
+
 //List of all possible key types and their associated data type
 let keyType = {
-  'Track ID': 'string',
+  'Track ID': 'integer',
   'Size': 'integer',
   'Total Time': 'integer',
   'Disc Number': 'integer',
