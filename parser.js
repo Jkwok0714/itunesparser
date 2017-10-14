@@ -8,26 +8,17 @@ fs.readFile(__dirname + '/sample.xml', function(err, data) {
         // console.dir(isolatedResults);
         console.log('Done. Extracted', isolatedResults.length, 'items');
         // processResults(isolatedResults);
-        rawResultsToObjects(isolatedResults);
+        let parsed = rawResultsToObjects(isolatedResults);
+        console.dir(parsed);
     });
 });
 
-
 let rawResultsToObjects = (rawResult) => {
-  // let resultArray = [];
-  //
-  // return resultArray;
-  console.log('Expecting to parse', rawResult[0]);
-  let obj1 = processObject(rawResult[0]);
-  console.dir(obj1);
-};
-
-let videoToObject = (obj) => {
-
-};
-
-let audioToObject = (obj) => {
-
+  let resultArray = [];
+  for (var obj of rawResult) {
+    resultArray.push(processObject(obj));
+  }
+  return resultArray;
 };
 
 let processObject = (obj) => {
@@ -41,8 +32,7 @@ let processObject = (obj) => {
 
   let typeOfKey;
   for (var key of obj.key) {
-    typeOfKey = keyType[key];
-    console.log('Processing key', key, 'of type', typeOfKey);
+    typeOfKey = KEY_TYPE[key];
     if (typeOfKey === 'boolean') {
       result[key] = 'boolean who cares';
     } else {
@@ -51,10 +41,10 @@ let processObject = (obj) => {
     currIndex[typeOfKey]++;
   }
   return result;
-}
+};
 
 //List of all possible key types and their associated data type
-let keyType = {
+const KEY_TYPE = {
   'Track ID': 'integer',
   'Size': 'integer',
   'Total Time': 'integer',
@@ -92,7 +82,8 @@ let keyType = {
   'Sort Album': 'string',
   'Sort Artist': 'string',
   'Sort Album Artist': 'string',
-  'Sort Composer': 'string'
+  'Sort Composer': 'string',
+  'Rating': 'integer'
 };
 
 /*
