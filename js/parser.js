@@ -18,6 +18,17 @@ let readXML = function() {
   });
 }
 
+let readXMLString = function(string) {
+  return new Promise((resolve, reject) => {
+    let parser = new xml2js.Parser();
+    parser.parseString(string, function (err, result) {
+      let isolatedResults = result.plist.dict[0].dict[0].dict;
+      let parsed = rawResultsToObjects(isolatedResults);
+      resolve(parsed);
+    });
+  });
+}
+
 let rawResultsToObjects = (rawResult) => {
   let resultArray = [];
   for (var obj of rawResult) {
@@ -92,5 +103,6 @@ const KEY_TYPE = {
 };
 
 module.exports = {
-  readXML
+  readXML,
+  readXMLString
 };

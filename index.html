@@ -9,10 +9,18 @@
 
 </head>
 <body>
-HarRROOoo
-
-<div id="scrollbox"></div>
-<a href="JavaScript:window.close()">Exit</a>
+Electron iTunes Parser
+<hr />
+<input type="text" id="filterInput" />
+<button id="submitButton">Submit</button>
+<div id="container">
+  <div id="scrollbox"></div>
+  <div id="scrollBg"></div>
+</div>
+<button id="exitButton">Exit</button>
+<button id="clearButton">Clear</button>
+<!-- <button id="loadButton">Load</button> -->
+<input id="fileLoader" type="file" accept=".xml" />
 
 <script>window.$ = window.jQuery = require('./lib/jquery.min.js');</script>
 <script src="./lib/jquery-ui.min.js"></script>

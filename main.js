@@ -1,4 +1,5 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, dialog} = require('electron');
+// const dialog = app.remote;
 const url = require('url');
 const path = require('path');
 
