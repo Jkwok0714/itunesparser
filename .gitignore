@@ -7,3 +7,6 @@ node_modules/
 ## Build ##
 itunesparser-darwin-x64/
 release-builds/
+
+## Huge Sample Data ##
+huge_sample.xml

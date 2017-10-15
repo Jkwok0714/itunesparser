@@ -21,13 +21,16 @@ let addButtonListeners = () => {
     console.log(targetFile.name);
     reader.onload = (function (targetFile) {
       return function(e) {
-        // console.log(e.target.result);
+        console.log('Attempting read');
+        console.log(e.target.result);
         parser.readXMLString(e.target.result).then((data) => {
+          console.log('Attempting render');
           for (var i = 0; i < data.length; i++) {
             renderSingleItem(data[i]);
           }
         }).catch((err) => {
-          window.alert('Error loading', err);
+          console.error(err);
+          window.alert('Error loading');
         });
       }
     })(targetFile);

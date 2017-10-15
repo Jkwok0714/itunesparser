@@ -4,25 +4,35 @@ let fs = require('fs'),
 let readXML = function() {
   return new Promise((resolve, reject) => {
     let parser = new xml2js.Parser();
-    fs.readFile(__dirname + '/../sample.xml', function(err, data) {
+    fs.readFile(__dirname + '/../huge_sample.xml', function(err, data) {
       parser.parseString(data, function (err, result) {
+        if (err) {
+          reject(err);
+        }
         let isolatedResults = result.plist.dict[0].dict[0].dict;
         // console.dir(isolatedResults);
         // console.log('Done. Extracted', isolatedResults.length, 'items');
         // processResults(isolatedResults);
         let parsed = rawResultsToObjects(isolatedResults);
-        // console.dir(parsed);
+        console.dir(parsed[4]);
         resolve(parsed);
       });
     });
   });
 }
 
+readXML();
+
 let readXMLString = function(string) {
   return new Promise((resolve, reject) => {
     let parser = new xml2js.Parser();
     parser.parseString(string, function (err, result) {
+      if (err) {
+        console.error(err);
+        reject(err);
+      }
       let isolatedResults = result.plist.dict[0].dict[0].dict;
+      console.log('Attempting parse');
       let parsed = rawResultsToObjects(isolatedResults);
       resolve(parsed);
     });
@@ -49,8 +59,11 @@ let processObject = (obj) => {
   let typeOfKey;
   for (var key of obj.key) {
     typeOfKey = KEY_TYPE[key];
+    if (typeOfKey === undefined) console.log(key, 'type is not defined!');
     if (typeOfKey === 'boolean') {
       result[key] = 'boolean who cares';
+    } else if (typeOfKey === undefined) {
+      result[key] = 'Undefined key alert!! ' + key;
     } else {
       result[key] = obj[typeOfKey][currIndex[typeOfKey]];
     }
@@ -99,7 +112,36 @@ const KEY_TYPE = {
   'Sort Artist': 'string',
   'Sort Album Artist': 'string',
   'Sort Composer': 'string',
-  'Rating': 'integer'
+  'Rating': 'integer',
+  'HD': 'boolean',
+  'Video Width': 'integer',
+  'Video Height': 'integer',
+  'Music Video': 'boolean',
+  'Purchased': 'boolean',
+  'Movie': 'boolean',
+  'File Type': 'integer',
+  'Track Count': 'integer',
+  'Release Date': 'date',
+  'Normalization': 'integer',
+  'Album Rating': 'integer',
+  'Skip Count': 'integer',
+  'Skip Date': 'date',
+  'Album Rating Computed': 'boolean',
+  'Disabled': 'boolean',
+  'Series': 'string',
+  'TV Show': 'boolean',
+  'Season': 'integer',
+  'Episode': 'string',
+  'Episode Order': 'integer',
+  'Content Rating': 'string',
+  'Protected': 'boolean',
+  'Compilation': 'boolean',
+  'Sort Series': 'string',
+  'Explicit': 'boolean',
+  'Start Time': 'integer',
+  'Stop Time': 'integer',
+  'Part Of Gapless Album': 'boolean',
+  'Clean': 'boolean'
 };
 
 module.exports = {
