@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  background-image: url('../img/bg.jpg');
+  background-image: url('../img/bg2.jpg');
   background-size: cover;
   font-family: sans-serif;
   color: gray;
@@ -19,15 +19,15 @@ body {
 #container {
   height: 75vh;
   width: 90%;
-  margin: auto;
-  margin-bottom: 5px;
+  margin: 10px auto 5px auto;
+  /*margin-bottom: 5px;*/
   position: relative;
 }
 
 #scrollBg {
   position: absolute;
   z-index: -1;
-  background-color: #fff8e2;
+  background-color: #c1f6ff;
   border-radius: 5px;
   width: 100%;
   height: 100%;
@@ -44,7 +44,7 @@ body {
   width: 95%;
   margin: auto;
   margin-bottom: 5px;
-  border: 1px solid red;
+  border: 1px solid white;
   border-radius: 5px;
   display: table;
 

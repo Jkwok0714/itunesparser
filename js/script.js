@@ -11,6 +11,7 @@ let addButtonListeners = () => {
 
   $('#clearButton').on('click', () =>{
     $('#scrollbox').empty();
+    $('#fileLoader').val('');
   });
 
   $('#fileLoader').on('change', (event) => {
