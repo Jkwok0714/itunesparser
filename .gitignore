@@ -3,3 +3,7 @@
 
 ## NPM ##
 node_modules/
+
+## Build ##
+itunesparser-darwin-x64/
+release-builds/

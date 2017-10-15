@@ -3,7 +3,7 @@ Load an iTunes XML and display searchable information about it
 
 ## TBI ##
 - [x] Load in XML and parse into JS Objects
-- [x] Refactor node script into desktop app
+- [x] Wrap node script into desktop app
 - [ ] Search current directory for XMLs for user to select
 - [ ] Load data into cache and use filter bar to display
 
@@ -14,3 +14,10 @@ Load an iTunes XML and display searchable information about it
 
 ## BUILD STEPS ##
 1. Run `npm install` for dependencies
+2. Run npm appropriate npm script for target OS
+```
+npm run package-win
+npm run package-linux
+npm run package-mac
+```
+3. Experience the slow performance and immense file-size for a tiny app 😛
