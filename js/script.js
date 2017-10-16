@@ -1,6 +1,9 @@
 let parser = require(__dirname + '/js/parser.js');
+// let worker = new Worker(__dirname + '/js/parser.js');
+
 $(function(){
   // readSample();
+  // showLoading();
   addButtonListeners();
 });
 
@@ -15,16 +18,17 @@ let addButtonListeners = () => {
   });
 
   $('#fileLoader').on('change', (event) => {
-    // window.alert('files changed?');
+    $('#scrollbox').empty();
+    showLoading();
     let reader = new FileReader();
     let targetFile = event.target.files[0];
     console.log(targetFile.name);
     reader.onload = (function (targetFile) {
       return function(e) {
-        console.log('Attempting read');
         console.log(e.target.result);
+        $('#loadMessage').text('Parsing XML');
         parser.readXMLString(e.target.result).then((data) => {
-          console.log('Attempting render');
+          hideLoading();
           for (var i = 0; i < data.length; i++) {
             renderSingleItem(data[i]);
           }
@@ -36,6 +40,15 @@ let addButtonListeners = () => {
     })(targetFile);
     reader.readAsText(targetFile);
   });
+};
+
+let showLoading = () => {
+  let $loadingcat = $('<div class="loadingBox"><img src="./img/loadingCat.gif" class="loadingCat"><span id="loadMessage">Reading XML</span></div>');
+  $('#scrollbox').prepend($loadingcat);
+};
+
+let hideLoading = () => {
+  $('.loadingBox').remove();
 };
 
 let renderSingleItem = (item) => {
@@ -50,19 +63,21 @@ let renderSingleItem = (item) => {
   $('#scrollbox').append($appendable);
 };
 
-let getMediaIcon = (kind) => {
+let getMediaIcon = (fileType) => {
   let link = '';
+  if (fileType.indexOf('video') !== -1) {
+    kind = 'video';
+  } else if (fileType.indexOf('audio') !== -1) {
+    kind = 'audio';
+  }
   switch (kind) {
-    case 'MPEG-4 video file':
+    case 'video':
     link = './img/video.png';
     break;
-    case 'Purchased AAC audio file':
-    case 'Apple Lossless audio file':
-    case 'MPEG audio file':
+    case 'audio':
     link = './img/music.png';
     break;
     default:
-
   }
   return $(`<img src=${link} class="mediaIcon">`);
 };

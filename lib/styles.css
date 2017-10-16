@@ -12,6 +12,7 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
   z-index: 1;
+  height: 75vh;
   position: relative;
   /*border: 1px solid black;*/
 }
@@ -36,6 +37,14 @@ body {
   left: 0;
 }
 
+.loadingCat, .loadingBox {
+  margin: auto;
+  position: relative;
+  z-index: 1;
+  top: 20%;
+  max-width: 100px;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -47,7 +56,6 @@ body {
   border: 1px solid white;
   border-radius: 5px;
   display: table;
-
 }
 
 .entryTitle {

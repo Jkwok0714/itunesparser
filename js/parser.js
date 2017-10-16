@@ -21,7 +21,7 @@ let readXML = function() {
   });
 }
 
-readXML();
+// readXML();
 
 let readXMLString = function(string) {
   return new Promise((resolve, reject) => {
