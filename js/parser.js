@@ -5,6 +5,7 @@ let readXML = function() {
   return new Promise((resolve, reject) => {
     let parser = new xml2js.Parser();
     fs.readFile(__dirname + '/../huge_sample.xml', function(err, data) {
+      console.log('Calling XML Parser');
       parser.parseString(data, function (err, result) {
         if (err) {
           reject(err);
@@ -13,6 +14,7 @@ let readXML = function() {
         // console.dir(isolatedResults);
         // console.log('Done. Extracted', isolatedResults.length, 'items');
         // processResults(isolatedResults);
+        console.log('Making sense of the parsed XML');
         let parsed = rawResultsToObjects(isolatedResults);
         console.dir(parsed[4]);
         resolve(parsed);
@@ -26,16 +28,34 @@ let readXML = function() {
 let readXMLString = function(string) {
   return new Promise((resolve, reject) => {
     let parser = new xml2js.Parser();
+    console.log('Calling XML parser');
     parser.parseString(string, function (err, result) {
       if (err) {
         console.error(err);
         reject(err);
       }
       let isolatedResults = result.plist.dict[0].dict[0].dict;
-      console.log('Attempting parse');
+      console.log('Attempting string parse');
       let parsed = rawResultsToObjects(isolatedResults);
       resolve(parsed);
     });
+  });
+}
+
+let readXMLStringNP = function(string) {
+  let parser = new xml2js.Parser();
+  console.log('Calling XML parser');
+  parser.parseString(string, function (err, result) {
+    if (err) {
+      console.error(err);
+      // reject(err);
+      throw new Error('Parsing error!');
+    }
+    let isolatedResults = result.plist.dict[0].dict[0].dict;
+    console.log('Attempting string parse');
+    let parsed = rawResultsToObjects(isolatedResults);
+    return parsed;
+    // resolve(parsed);
   });
 }
 

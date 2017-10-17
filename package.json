@@ -13,6 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cluster": "^0.7.7",
+    "electron-remote": "^1.2.0",
     "pretty-bytes": "^4.0.2",
     "xml2js": "^0.4.19"
   },

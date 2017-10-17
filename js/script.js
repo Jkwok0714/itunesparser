@@ -1,5 +1,8 @@
-let parser = require(__dirname + '/js/parser.js');
+// let parser = require(__dirname + '/js/parser.js');
 // let worker = new Worker(__dirname + '/js/parser.js');
+// const { requireTaskPool } from 'electron-remote';
+const requireTaskPool = require('electron-remote').requireTaskPool;
+const parser = requireTaskPool(require.resolve('./js/parser.js'));
 
 $(function(){
   // readSample();
@@ -19,22 +22,21 @@ let addButtonListeners = () => {
 
   $('#fileLoader').on('change', (event) => {
     $('#scrollbox').empty();
+    if (event.target.files.length === 0) return;
     showLoading();
     let reader = new FileReader();
     let targetFile = event.target.files[0];
     console.log(targetFile.name);
     reader.onload = (function (targetFile) {
       return function(e) {
-        console.log(e.target.result);
+        // console.log(e.target.result);
         $('#loadMessage').text('Parsing XML');
+        // let parsedString = await parser.readXMLStringNP(e.target.result);
         parser.readXMLString(e.target.result).then((data) => {
           hideLoading();
           for (var i = 0; i < data.length; i++) {
             renderSingleItem(data[i]);
           }
-        }).catch((err) => {
-          console.error(err);
-          window.alert('Error loading');
         });
       }
     })(targetFile);
