@@ -6,6 +6,8 @@ Load an iTunes XML and display searchable information about it
 - [x] Wrap node script into desktop app
 - [ ] Search current directory for XMLs for user to select
 - [ ] Load data into cache and use filter bar to display
+- [ ] Popup div for displaying song specific stats
+- [ ] Statistics: Genre %, total plays, etc.
 
 ## QUESTIONS/PROJECT GOALS ##
 * Parse an XML with known format into meaningful JS data?
