@@ -62,7 +62,15 @@ body {
   display: table-cell;
 }
 
+.entryInfo {
+  display: table-row;
+  font-size: 9px;
+  margin: auto;
+}
+
 .mediaIcon {
   max-width: 20px;
-  display: table-cell;
+  position: absolute;
+  left: 0;
+  /*display: table-cell;*/
 }
