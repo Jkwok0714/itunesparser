@@ -4,6 +4,9 @@ const parser = requireTaskPool(require.resolve('./js/parser.js'));
 const divConstructor = require('./js/divConstructor.js');
 
 let library = [];
+let filteredLibrary = [];
+let loadAtOnce = 20;
+let loadIndex = 0;
 
 $(function(){
   // readSample();
@@ -21,6 +24,16 @@ let addButtonListeners = () => {
     $('#fileLoader').val('');
   });
 
+  $('#scrollbox').on('scroll', function() {
+    if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight - 1) {
+        // window.alert('end reached');
+        if (loadIndex + 1 < filteredLibrary.length) {
+          loadIndex += loadAtOnce;
+          renderNextPage();
+        }
+    }
+  })
+
   $('#fileLoader').on('change', (event) => {
     $('#scrollbox').empty();
     if (event.target.files.length === 0) return;
@@ -34,7 +47,8 @@ let addButtonListeners = () => {
         parser.readXMLString(e.target.result).then((data) => {
           hideLoading();
           library = data;
-          renderLibrary();
+          filteredLibrary = library;
+          renderNextPage();
         });
       }
     })(targetFile);
@@ -42,9 +56,16 @@ let addButtonListeners = () => {
   });
 };
 
-let renderLibrary = () => {
-  for (var i = 0; i < library.length; i++) {
-    renderSingleItem(library[i]);
+let renderLibrary = (max = loadAtOnce) => {
+  for (var i = 0; i < max; i++) {
+    renderSingleItem(filteredLibrary[i]);
+  }
+};
+
+let renderNextPage = () => {
+  for (var i = loadIndex; i < loadIndex + loadAtOnce; i++) {
+    if (i >= filteredLibrary.length) break;
+    renderSingleItem(filteredLibrary[i]);
   }
 };
 
