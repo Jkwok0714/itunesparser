@@ -14,7 +14,6 @@ let getMediaIcon = (fileType) => {
     break;
     default:
   }
-  // return $(`<img src=${link} class="mediaIcon">`);
   return `<img src=${link} class="mediaIcon">`;
 
 };
@@ -37,7 +36,6 @@ let createCard = (item) => {
                         </div>
                       </div>`);
 
-  // $appendable.prepend(getMediaIcon(kind));
   return $appendable;
 };
 

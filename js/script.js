@@ -1,32 +1,54 @@
 const requireTaskPool = require('electron-remote').requireTaskPool;
-const parser = requireTaskPool(require.resolve('./js/parser.js'));
-// const parser = require('./js/parser.js');
+const Parser = requireTaskPool(require.resolve('./js/parser.js'));
 const divConstructor = require('./js/divConstructor.js');
 
 let library = [];
 let filteredLibrary = [];
 let loadAtOnce = 20;
 let loadIndex = 0;
+let applicationState = {
+  filterBy: 'Name'
+};
 
 $(function(){
-  // readSample();
-  // showLoading();
-  addButtonListeners();
+  setupListeners();
 });
 
-let addButtonListeners = () => {
-  $('#exitButton').on('click', () =>{
+let setupListeners = () => {
+  $('.dropdown-item').on('click', (e) => {
+    e.preventDefault();
+    let selected = $(e.target).text();
+    $('#myDropdown').toggleClass('show');
+    applicationState.filterBy = selected;
+    $('.dropdownToggle').text(selected);
+  });
+
+  $('#exitButton').on('click', () => {
     window.close();
   });
 
-  $('#clearButton').on('click', () =>{
-    $('#scrollbox').empty();
+  $('#clearButton').on('click', () => {
+    clearScreen();
     $('#fileLoader').val('');
+    $('.filter-tools').addClass('hide');
   });
+
+  $('#filterButton').on('click', () => {
+    filterLibrary();
+  });
+
+  $('#clearFilterButton').on('click', () => {
+    filteredLibrary = library;
+    $('#filterInput').val('');
+    renderNextPage();
+  });
+
+  $('.dropdownToggle').on('click', () => {
+    $('#myDropdown').toggleClass('show');
+  })
 
   $('#scrollbox').on('scroll', function() {
     if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight - 1) {
-        // window.alert('end reached');
         if (loadIndex + 1 < filteredLibrary.length) {
           loadIndex += loadAtOnce;
           renderNextPage();
@@ -35,19 +57,19 @@ let addButtonListeners = () => {
   })
 
   $('#fileLoader').on('change', (event) => {
-    $('#scrollbox').empty();
+    clearScreen();
     if (event.target.files.length === 0) return;
     showLoading();
     let reader = new FileReader();
     let targetFile = event.target.files[0];
-    // console.log(targetFile.name);
     reader.onload = (function (targetFile) {
       return function(e) {
         $('#loadMessage').text('Parsing XML');
-        parser.readXMLString(e.target.result).then((data) => {
+        Parser.readXMLString(e.target.result).then((data) => {
           hideLoading();
           library = data;
           filteredLibrary = library;
+          $('.filter-tools').removeClass('hide');
           renderNextPage();
         });
       }
@@ -55,6 +77,29 @@ let addButtonListeners = () => {
     reader.readAsText(targetFile);
   });
 };
+
+let clearScreen = () => {
+  $('#scrollbox').empty();
+}
+
+let filterLibrary = () => {
+  const filter = $('#filterInput').val();
+  if (filter === '' || filter === undefined) {
+    window.alert('Enter a filter query');
+    return;
+  }
+  clearScreen();
+  showLoading();
+  console.log('Lib.', library);
+  Parser.filterLibrary(library, filter, applicationState.filterBy).then(res => {
+    filteredLibrary = res;
+    hideLoading();
+    renderNextPage();
+  }).catch(err => {
+    hideLoading();
+    window.alert('An error has occurred while filtering. ' + err);
+  });
+}
 
 let renderLibrary = (max = loadAtOnce) => {
   for (var i = 0; i < max; i++) {
@@ -91,7 +136,7 @@ let displayAThing = () => {
 };
 
 let readSample = () => {
-  parser.readXML().then((data) => {
+  Parser.readXML().then((data) => {
     let $appendable = $('<div>' + JSON.stringify(data) + '</div>');
     $('#scrollbox').append($appendable);
   }).catch((err) => {

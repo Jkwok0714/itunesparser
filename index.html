@@ -9,10 +9,25 @@
 
 </head>
 <body>
-Electron iTunes Parser
+<span class="app-title">Electron iTunes Parser</span>
 <hr />
-<input type="text" id="filterInput" placeholder="Search Query" />
-<button id="submitButton">Filter</button>
+<div class="filter-tools hide">
+  <input type="text" id="filterInput" placeholder="Search Query" />
+
+  <div class="dropdown">
+    <div id="myDropdown" class="dropdown-content">
+      <span class="dropdown-item">Name</span>
+      <span class="dropdown-item">Artist</span>
+      <span class="dropdown-item">Album</span>
+      <span class="dropdown-item">Genre</span>
+    </div>
+    Filter by:
+    <button class="dropdownToggle">Name</button>
+  </div>
+
+  <button id="filterButton">Filter</button>
+  <button id="clearFilterButton">Clear Filter</button>
+</div>
 <div id="container">
   <div id="scrollbox"></div>
   <div id="scrollBg"></div>

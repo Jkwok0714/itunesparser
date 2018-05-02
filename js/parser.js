@@ -41,6 +41,19 @@ let rawResultsToObjects = (rawResult) => {
   return resultArray;
 };
 
+let filterLibrary = (library, filter, filterBy) => {
+  return new Promise ((resolve, reject) => {
+    try {
+      let filtered = library.filter(item => {
+        return item[filterBy].toLowerCase().includes(filter.toLowerCase());
+      });
+      resolve(filtered);
+    } catch (e) {
+      reject('Error filtering: ' + e.message);
+    }
+  });
+};
+
 let processObject = (obj) => {
   let result = {};
   let currIndex = {
@@ -139,6 +152,7 @@ const KEY_TYPE = {
 };
 
 module.exports = {
+  filterLibrary,
   readXML,
   readXMLString
 };
